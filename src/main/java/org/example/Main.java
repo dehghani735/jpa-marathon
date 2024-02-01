@@ -2,9 +2,8 @@ package org.example;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import org.example.entities.Author;
+import jakarta.persistence.TypedQuery;
 import org.example.entities.Book;
-import org.example.entities.enums.BookType;
 import org.example.persistence.CustomPersistenceUnitInfo;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
@@ -18,7 +17,7 @@ public class Main {
         Map<String, String> props = new HashMap<>();
 
         props.put("hibernate.show_sql", "true");
-        props.put("hibernate.hbm2ddl.auto", "create"); // none create update
+        props.put("hibernate.hbm2ddl.auto", "none"); // none create update
 
         EntityManagerFactory emf =
 //                Persistence.createEntityManagerFactory("my-persistence-unit");
@@ -39,15 +38,25 @@ public class Main {
 
 //            Book b1 = em.find(Book.class, 3); // get from the database and put into the context
 
-            Book b1 = new Book();
-            b1.setTitle("Troubleshooting java");
-            b1.setBookType(BookType.TECHNICAL);
 
-            Author a1 = new Author();
-            a1.setName("Laur Spilca");
-            a1.setBook(b1);
+//            Book b1 = new Book();
+//            b1.setTitle("Troubleshooting java");
+//            b1.setBookType(BookType.TECHNICAL);
+//
+//            Author a1 = new Author();
+//            a1.setName("Laur Spilca");
+//            a1.setBook(b1);
+//
+//            em.persist(a1);
 
-            em.persist(a1);
+            //
+            TypedQuery<Book> bookQuery =
+                    em.createQuery("SELECT b from Book b where b.author.id = :id", Book.class);
+            bookQuery.setParameter("id", 1);
+
+            bookQuery.getResultStream()
+                            .forEach(b -> System.out.println(b));
+
 
             em.getTransaction().commit(); // where the insert might go to a db. context is mirrored to the db
         } catch (Exception e) {

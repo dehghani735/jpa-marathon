@@ -19,6 +19,9 @@ public class Book {
     @Column(name = "type")
     private BookType bookType;
 
+    @OneToOne(mappedBy = "book")
+    private Author author;
+
     public Integer getId() {
         return id;
     }
