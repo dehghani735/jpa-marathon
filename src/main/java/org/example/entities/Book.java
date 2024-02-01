@@ -1,6 +1,7 @@
 package org.example.entities;
 
 import jakarta.persistence.*;
+import org.example.entities.enums.BookType;
 
 import java.util.Objects;
 
@@ -9,9 +10,14 @@ import java.util.Objects;
 public class Book {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
+
+    @Enumerated()
+    @Column(name = "type")
+    private BookType bookType;
 
     public Integer getId() {
         return id;
