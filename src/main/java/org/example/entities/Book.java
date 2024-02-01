@@ -15,7 +15,7 @@ public class Book {
 
     private String title;
 
-    @Enumerated()
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private BookType bookType;
 
@@ -33,6 +33,14 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public BookType getBookType() {
+        return bookType;
+    }
+
+    public void setBookType(BookType bookType) {
+        this.bookType = bookType;
     }
 
     @Override
@@ -53,6 +61,7 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", bookType=" + bookType +
                 '}';
     }
 }

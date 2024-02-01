@@ -2,7 +2,9 @@ package org.example;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import org.example.entities.Author;
 import org.example.entities.Book;
+import org.example.entities.enums.BookType;
 import org.example.persistence.CustomPersistenceUnitInfo;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
@@ -16,7 +18,7 @@ public class Main {
         Map<String, String> props = new HashMap<>();
 
         props.put("hibernate.show_sql", "true");
-        props.put("hibernate.hbm2ddl.auto", "none"); // none create update
+        props.put("hibernate.hbm2ddl.auto", "create"); // none create update
 
         EntityManagerFactory emf =
 //                Persistence.createEntityManagerFactory("my-persistence-unit");
@@ -36,23 +38,16 @@ public class Main {
             // refresh() --> reestablish the data in the instance the way it is in the DB (undo)
 
 //            Book b1 = em.find(Book.class, 3); // get from the database and put into the context
-//            b1.setTitle("something else");
-//            System.out.println(b1);
-//
-//            Book b2 = new Book();
-//            b2.setId(2);
-//            em.persist(b2); // An insert goes to the db?? noooo - an instance goes into the context
-//            em.detach(b2);
 
-//            Book b1 = new Book();
-//            b1.setId(1);
-//
-//            em.merge(b1);
-//            b1.setTitle("Troubleshooting Java");
+            Book b1 = new Book();
+            b1.setTitle("Troubleshooting java");
+            b1.setBookType(BookType.TECHNICAL);
 
-            Book b1  = em.getReference(Book.class, 1);
-            System.out.println(b1.getTitle());
+            Author a1 = new Author();
+            a1.setName("Laur Spilca");
+            a1.setBook(b1);
 
+            em.persist(a1);
 
             em.getTransaction().commit(); // where the insert might go to a db. context is mirrored to the db
         } catch (Exception e) {
