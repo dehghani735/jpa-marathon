@@ -2,6 +2,8 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "authors")
 public class Author {
@@ -12,9 +14,12 @@ public class Author {
 
     private String name;
 
-    @OneToOne(cascade = CascadeType.PERSIST) // Owner of the relationship is where the foreign key is.
+//    @OneToOne(cascade = CascadeType.PERSIST) // Owner of the relationship is where the foreign key is.
+//    @JoinColumn(name = "book")
+
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "book")
-    private Book book;
+    private Set<Book> books;
 
     public int getId() {
         return id;
@@ -32,11 +37,11 @@ public class Author {
         this.name = name;
     }
 
-    public Book getBook() {
-        return book;
+    public Set<Book> getBooks() {
+        return books;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }

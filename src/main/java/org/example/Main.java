@@ -2,13 +2,15 @@ package org.example;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.TypedQuery;
+import org.example.entities.Author;
 import org.example.entities.Book;
+import org.example.entities.enums.BookType;
 import org.example.persistence.CustomPersistenceUnitInfo;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,7 +19,7 @@ public class Main {
         Map<String, String> props = new HashMap<>();
 
         props.put("hibernate.show_sql", "true");
-        props.put("hibernate.hbm2ddl.auto", "none"); // none create update
+        props.put("hibernate.hbm2ddl.auto", "create"); // none create update
 
         EntityManagerFactory emf =
 //                Persistence.createEntityManagerFactory("my-persistence-unit");
@@ -50,13 +52,24 @@ public class Main {
 //            em.persist(a1);
 
             //
-            TypedQuery<Book> bookQuery =
-                    em.createQuery("SELECT b from Book b where b.author.id = :id", Book.class);
-            bookQuery.setParameter("id", 1);
+//            TypedQuery<Book> bookQuery =
+//                    em.createQuery("SELECT b from Book b where b.author.id = :id", Book.class);
+//            bookQuery.setParameter("id", 1);
+//
+//            bookQuery.getResultStream()
+//                            .forEach(b -> System.out.println(b));
 
-            bookQuery.getResultStream()
-                            .forEach(b -> System.out.println(b));
+            //
 
+            Book b1 = new Book();
+            b1.setTitle("Troubleshooting java");
+            b1.setBookType(BookType.TECHNICAL);
+
+            Author au = new Author();
+            au.setName("Laur");
+            au.setBooks(Set.of(b1));
+
+            em.persist(au);
 
             em.getTransaction().commit(); // where the insert might go to a db. context is mirrored to the db
         } catch (Exception e) {
