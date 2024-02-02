@@ -19,6 +19,10 @@ public class Book {
     @Column(name = "type")
     private BookType bookType;
 
+    @ManyToOne
+    @JoinColumn(name = "book")
+    private Author author;
+
     public Integer getId() {
         return id;
     }

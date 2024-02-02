@@ -17,8 +17,7 @@ public class Author {
 //    @OneToOne(cascade = CascadeType.PERSIST) // Owner of the relationship is where the foreign key is.
 //    @JoinColumn(name = "book")
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "book")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "author")
     private Set<Book> books;
 
     public int getId() {
